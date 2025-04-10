@@ -75,3 +75,15 @@ project:
     - regions: ../regions_MCXN947VDF.h
       define:
         - CPU_MCXN947VDF_cm33_core0
+
+  misc:
+    - for-compiler: AC6
+      C-CPP:
+        - -gdwarf-5
+
+  output:
+    type:
+      - elf
+      - bin
+      - hex
+      - map

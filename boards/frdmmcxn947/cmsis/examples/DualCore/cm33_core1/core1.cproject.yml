@@ -45,6 +45,15 @@ project:
       define:
         - CPU_MCXN947VDF_cm33_core1
 
+  misc:
+    - for-compiler: AC6
+      C-CPP:
+        - -gdwarf-5
+
   output:
     base-name: core1_image
-    type: bin
+    type:
+      - elf
+      - bin
+      - hex
+      - map
