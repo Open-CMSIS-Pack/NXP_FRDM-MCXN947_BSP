@@ -13,7 +13,7 @@
             "gdb": "arm-none-eabi-gdb",
             "initCommands": [
                 "load ./out/core0/MCXN947/Debug/core0.hex",
-                "break main"
+                "tbreak main"
             ],
             "target": {
                 "server": "pyocd",
