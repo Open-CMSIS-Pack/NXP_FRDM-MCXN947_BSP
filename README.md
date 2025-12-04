@@ -1,5 +1,7 @@
 # NXP_FRDM-MCXN947_BSP
 
+[![Build pack](https://img.shields.io/github/actions/workflow/status/Open-CMSIS-Pack/NXP_FRDM-MCXN947_BSP/gen_pack.yml?logo=arm&logoColor=0091bd&label=Build%20pack)](/.github/workflows/gen_pack.yml)
+
 **IMPORTANT**
 - This is a development repository for the **NXP FRDM-MCXN947 Board Support Pack (BSP)**. It demonstrates some CMSIS concepts, but it is not planned to release this pack directly from this repository. The concepts are proposals only.
 
