@@ -30,8 +30,8 @@ int main (void) {
   BOARD_InitBootClocks();
   BOARD_InitBootPins();
 
-  NVIC_SetPriority(ETHERNET_IRQn,     8U);
-  NVIC_SetPriority(LP_FLEXCOMM4_IRQn, 8U);
+  NVIC_SetPriority(ETHERNET_IRQn,     7U);
+  NVIC_SetPriority(LP_FLEXCOMM4_IRQn, 7U);
 
   /* Initialize Virtual I/O */
   vioInit();
