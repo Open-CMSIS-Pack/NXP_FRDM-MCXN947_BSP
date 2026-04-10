@@ -1,5 +1,5 @@
 /* --------------------------------------------------------------------------
- * Copyright (c) 2025 Arm Limited (or its affiliates).
+ * Copyright (c) 2025-2026 Arm Limited (or its affiliates).
  * All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -17,8 +17,8 @@
  * limitations under the License.
  *
  *
- * $Date:        5. December 2024
- * $Revision:    V1.0
+ * $Date:        16. February 2026
+ * $Revision:    V1.1
  *
  * Driver:       Driver_ETH_MAC0
  * Configured:   pin/clock configuration via MCUXpresso Config Tools
@@ -33,6 +33,8 @@
  * -------------------------------------------------------------------------- */
 
 /* History:
+ *  Version 1.1
+ *    Added VLAN filtering
  *  Version 1.0
  *    Initial release
  */
@@ -45,7 +47,7 @@
   #define EMAC_CHECKSUM_OFFLOAD 1
 #endif
 
-#define ARM_ETH_MAC_DRV_VERSION    ARM_DRIVER_VERSION_MAJOR_MINOR(1, 0) /* driver version */
+#define ARM_ETH_MAC_DRV_VERSION    ARM_DRIVER_VERSION_MAJOR_MINOR(1, 1) /* driver version */
 
 /* EMAC Memory Buffer configuration */
 #define EMAC_BUF_SIZE           1536U   /* ETH Receive/Transmit buffer size   */
@@ -407,13 +409,17 @@ static uint32_t GetRxFrameSize (void) {
     return 0U;
   }
  
-  if (!(stat & ENET_RXDESCRIP_WR_FD_MASK)    ||
-      !(stat & ENET_RXDESCRIP_WR_LD_MASK)    ||
-       (stat & ENET_RXDESCRIP_WR_ERRSUM_MASK)) {
-    /* Error, this block is invalid */
-    return 0xFFFFFFFFU;
+  if (stat & ENET_RXDESCRIP_WR_ERRSUM_MASK) {
+    return ARM_DRIVER_ERROR;
+  }
+  if (!(stat & ENET_RXDESCRIP_WR_FD_MASK) || !(stat & ENET_RXDESCRIP_WR_LD_MASK)) {
+    return ARM_DRIVER_ERROR;
   }
 
+  if ((emac.flags & EMAC_FLAG_VLAN) && (stat & ENET_RXDESCRIP_LEN_TYPE_MASK) != ENET_RXDESCRIP_LEN_TYPE_VLAN) {
+    /* type packet with no VLAN tag */
+    return ARM_DRIVER_ERROR;
+  }
   return (stat & ENET_RXDESCRIP_WR_PACKETLEN_MASK) - ENET_FCS_LEN;
 }
 
@@ -606,9 +612,11 @@ static int32_t Control (uint32_t control, uint32_t arg) {
       ENET_SetVlanCtrl(ENET, &vlan_ctrl);
       if (arg != 0U) {
         ENET->MAC_PACKET_FILTER |=  ENET_MAC_PACKET_FILTER_VTFE_MASK;
+        emac.flags              |=  EMAC_FLAG_VLAN;
       } 
       else {
         ENET->MAC_PACKET_FILTER &= ~ENET_MAC_PACKET_FILTER_VTFE_MASK;
+        emac.flags              &= ~EMAC_FLAG_VLAN;
       } 
       break;
 
