@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- 
- * Copyright (c) 2025 Arm Limited (or its affiliates).
+ * Copyright (c) 2025-2026 Arm Limited (or its affiliates).
  * All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -17,8 +17,8 @@
  * limitations under the License.
  *
  *
- * $Date:        5. December 2024
- * $Revision:    V1.0
+ * $Date:        16. February 2026
+ * $Revision:    V1.1
  *
  * Project:      Ethernet Media Access (MAC) Definitions for NXP MCXN9xx
  * -------------------------------------------------------------------------- */
@@ -41,6 +41,7 @@
 /* EMAC Driver state flags */
 #define EMAC_FLAG_INIT     (1U << 0)        // Driver initialized
 #define EMAC_FLAG_POWER    (1U << 1)        // Driver power on
+#define EMAC_FLAG_VLAN     (1U << 2)        // VLAN enabled
 
 /* EMAC Driver Control Information */
 typedef struct _EMAC_INFO {
@@ -53,5 +54,15 @@ typedef struct _EMAC_INFO {
 
 /* Global functions and variables exported by the driver */
 extern ARM_DRIVER_ETH_MAC Driver_ETH_MAC0;
+
+#define ENET_RXDESCRIP_LEN_TYPE_MASK        (7UL << 16)
+/* Length/Type packet values */
+#define ENET_RXDESCRIP_LEN_TYPE_LEN         (0UL << 16)
+#define ENET_RXDESCRIP_LEN_TYPE_TYPE        (1UL << 16)
+#define ENET_RXDESCRIP_LEN_TYPE_ARP_RQ      (3UL << 16)
+#define ENET_RXDESCRIP_LEN_TYPE_VLAN        (4UL << 16)
+#define ENET_RXDESCRIP_LEN_TYPE_DBL_VLAN    (5UL << 16)
+#define ENET_RXDESCRIP_LEN_TYPE_MAC_CTRL    (6UL << 16)
+#define ENET_RXDESCRIP_LEN_TYPE_MAC_OAM     (7UL << 16)
 
 #endif /* EMAC_MCXN9XX_H_ */

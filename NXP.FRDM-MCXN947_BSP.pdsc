@@ -1775,7 +1775,7 @@
         <file category="include" name="boards/frdmmcxn947/project_template/"/>
       </files>
     </component>
-    <component Cclass="CMSIS Driver" Cgroup="Ethernet MAC" Capiversion="2.2.0" Cversion="1.0.0" condition="CMSIS_Driver_EMAC">
+    <component Cclass="CMSIS Driver" Cgroup="Ethernet MAC" Capiversion="2.2.0" Cversion="1.1.0" condition="CMSIS_Driver_EMAC">
       <description>Ethernet MAC Driver for NXP MCXN9xx Series</description>
       <RTE_Components_h>
         #define RTE_Drivers_ETH_MAC0    (1U)    /* Driver ETH_MAC0 */
